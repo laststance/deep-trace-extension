@@ -1,0 +1,144 @@
+{
+  "name": "deep-trace-navigation",
+  "displayName": "Deep Trace Navigation",
+  "description": "Replay deep-trace Markdown tables as native VS Code editor navigation steps.",
+  "version": "0.0.1",
+  "publisher": "laststance",
+  "license": "MIT",
+  "icon": "media/icon.png",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/laststance/deep-trace-extension"
+  },
+  "bugs": {
+    "url": "https://github.com/laststance/deep-trace-extension/issues"
+  },
+  "homepage": "https://github.com/laststance/deep-trace-extension#readme",
+  "keywords": [
+    "trace",
+    "debug",
+    "navigation",
+    "code-flow",
+    "execution-path",
+    "deep-trace"
+  ],
+  "engines": {
+    "vscode": "^1.74.0"
+  },
+  "categories": [
+    "Debuggers",
+    "Visualization",
+    "Other"
+  ],
+  "galleryBanner": {
+    "color": "#2F6FEB",
+    "theme": "dark"
+  },
+  "main": "./out/extension.js",
+  "activationEvents": [
+    "onView:deepTrace.traceView",
+    "onCommand:deepTrace.loadFromClipboard",
+    "onCommand:deepTrace.nextStep",
+    "onCommand:deepTrace.previousStep",
+    "onCommand:deepTrace.revealCurrentStep",
+    "onCommand:deepTrace.goToDefinition"
+  ],
+  "scripts": {
+    "build": "tsc -p .",
+    "watch": "tsc -w -p .",
+    "typecheck": "tsc -p . --noEmit",
+    "test": "vitest run",
+    "package": "pnpm build && pnpm exec vsce package --no-dependencies",
+    "vsce:publish": "pnpm build && pnpm exec vsce publish --no-dependencies"
+  },
+  "contributes": {
+    "viewsContainers": {
+      "activitybar": [
+        {
+          "id": "deepTrace",
+          "title": "Deep Trace",
+          "icon": "media/trace.svg"
+        }
+      ]
+    },
+    "views": {
+      "deepTrace": [
+        {
+          "id": "deepTrace.traceView",
+          "name": "Trace Steps"
+        }
+      ]
+    },
+    "commands": [
+      {
+        "command": "deepTrace.loadFromClipboard",
+        "title": "Load Trace from Clipboard",
+        "category": "Deep Trace",
+        "icon": {
+          "light": "media/light/load.svg",
+          "dark": "media/dark/load.svg"
+        }
+      },
+      {
+        "command": "deepTrace.nextStep",
+        "title": "Next Step",
+        "category": "Deep Trace",
+        "icon": {
+          "light": "media/light/next.svg",
+          "dark": "media/dark/next.svg"
+        }
+      },
+      {
+        "command": "deepTrace.previousStep",
+        "title": "Previous Step",
+        "category": "Deep Trace",
+        "icon": {
+          "light": "media/light/previous.svg",
+          "dark": "media/dark/previous.svg"
+        }
+      },
+      {
+        "command": "deepTrace.revealCurrentStep",
+        "title": "Reveal Current Step",
+        "category": "Deep Trace"
+      },
+      {
+        "command": "deepTrace.goToDefinition",
+        "title": "Go to Definition from Current Step",
+        "category": "Deep Trace"
+      }
+    ],
+    "menus": {
+      "view/title": [
+        {
+          "command": "deepTrace.loadFromClipboard",
+          "when": "view == deepTrace.traceView",
+          "group": "navigation@1"
+        },
+        {
+          "command": "deepTrace.previousStep",
+          "when": "view == deepTrace.traceView",
+          "group": "navigation@2"
+        },
+        {
+          "command": "deepTrace.nextStep",
+          "when": "view == deepTrace.traceView",
+          "group": "navigation@3"
+        }
+      ]
+    },
+    "viewsWelcome": [
+      {
+        "view": "deepTrace.traceView",
+        "contents": "No deep trace loaded yet.\n[Load Trace from Clipboard](command:deepTrace.loadFromClipboard)"
+      }
+    ]
+  },
+  "devDependencies": {
+    "@types/node": "^25.4.0",
+    "@types/vscode": "^1.74.0",
+    "@vscode/vsce": "^3.7.1",
+    "typescript": "^5.9.3",
+    "vitest": "^4.0.18"
+  }
+}
