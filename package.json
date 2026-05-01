@@ -41,7 +41,9 @@
     "onCommand:deepTrace.nextStep",
     "onCommand:deepTrace.previousStep",
     "onCommand:deepTrace.revealCurrentStep",
-    "onCommand:deepTrace.goToDefinition"
+    "onCommand:deepTrace.goToDefinition",
+    "onCommand:deepTrace.setBreakpoints",
+    "onCommand:deepTrace.clearBreakpoints"
   ],
   "scripts": {
     "build": "tsc -p .",
@@ -98,6 +100,24 @@
         }
       },
       {
+        "command": "deepTrace.setBreakpoints",
+        "title": "Set Trace Breakpoints",
+        "category": "Deep Trace",
+        "icon": {
+          "light": "media/light/set-breakpoints.svg",
+          "dark": "media/dark/set-breakpoints.svg"
+        }
+      },
+      {
+        "command": "deepTrace.clearBreakpoints",
+        "title": "Clear Trace Breakpoints",
+        "category": "Deep Trace",
+        "icon": {
+          "light": "media/light/clear-breakpoints.svg",
+          "dark": "media/dark/clear-breakpoints.svg"
+        }
+      },
+      {
         "command": "deepTrace.revealCurrentStep",
         "title": "Reveal Current Step",
         "category": "Deep Trace"
@@ -116,14 +136,24 @@
           "group": "navigation@1"
         },
         {
-          "command": "deepTrace.previousStep",
+          "command": "deepTrace.setBreakpoints",
           "when": "view == deepTrace.traceView",
           "group": "navigation@2"
         },
         {
-          "command": "deepTrace.nextStep",
+          "command": "deepTrace.clearBreakpoints",
           "when": "view == deepTrace.traceView",
           "group": "navigation@3"
+        },
+        {
+          "command": "deepTrace.previousStep",
+          "when": "view == deepTrace.traceView",
+          "group": "navigation@4"
+        },
+        {
+          "command": "deepTrace.nextStep",
+          "when": "view == deepTrace.traceView",
+          "group": "navigation@5"
         }
       ]
     },

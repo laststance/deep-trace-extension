@@ -1,10 +1,15 @@
 .vscode/**
+.serena/**
+logs/**
 src/**
 docs/**
 node_modules/**
 out/test/**
 .gitignore
+.DS_Store
+CLAUDE.md
 tsconfig.json
 vitest.config.ts
 pnpm-lock.yaml
+*.vsix
 **/*.map

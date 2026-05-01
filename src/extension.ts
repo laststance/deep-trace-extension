@@ -2,9 +2,10 @@ import * as vscode from "vscode";
 
 import type { TraceStep } from "./models/traceStep";
 import { parseTraceMarkdown } from "./parser/traceParser";
+import { BreakpointService } from "./services/breakpointService";
 import { DefinitionService } from "./services/definitionService";
 import { NavigationService } from "./services/navigationService";
-import { TraceSessionStore } from "./state/traceSessionStore";
+import { TraceSessionStore, type SessionStorage } from "./state/traceSessionStore";
 import { TraceTreeItem, TraceTreeProvider } from "./views/traceTreeProvider";
 
 const LOAD_TRACE_COMMAND = "deepTrace.loadFromClipboard";
@@ -12,6 +13,8 @@ const NEXT_STEP_COMMAND = "deepTrace.nextStep";
 const PREVIOUS_STEP_COMMAND = "deepTrace.previousStep";
 const REVEAL_CURRENT_STEP_COMMAND = "deepTrace.revealCurrentStep";
 const GO_TO_DEFINITION_COMMAND = "deepTrace.goToDefinition";
+const SET_BREAKPOINTS_COMMAND = "deepTrace.setBreakpoints";
+const CLEAR_BREAKPOINTS_COMMAND = "deepTrace.clearBreakpoints";
 const SELECT_STEP_COMMAND = "deepTrace.selectStep";
 const TRACE_VIEW_ID = "deepTrace.traceView";
 const NO_TRACE_MESSAGE = "Load a deep trace before using trace navigation commands.";
@@ -21,8 +24,10 @@ const NO_TRACE_MESSAGE = "Load a deep trace before using trace navigation comman
  */
 class DeepTraceExtensionController implements vscode.Disposable {
   private readonly sessionStore: TraceSessionStore;
+  private readonly workspaceStorage: SessionStorage;
   private readonly navigationService = new NavigationService();
   private readonly definitionService = new DefinitionService(this.navigationService);
+  private readonly breakpointService: BreakpointService;
   private readonly treeProvider: TraceTreeProvider;
   private readonly treeView: vscode.TreeView<TraceTreeItem>;
   private readonly disposables: vscode.Disposable[] = [];
@@ -31,18 +36,28 @@ class DeepTraceExtensionController implements vscode.Disposable {
    * Creates a new extension controller for one VS Code window.
    */
   public constructor(private readonly context: vscode.ExtensionContext) {
-    this.sessionStore = new TraceSessionStore({
+    this.workspaceStorage = {
       get: <T>(key: string): T | undefined => this.context.workspaceState.get<T>(key),
       update: (key: string, value: unknown): Promise<void> =>
         Promise.resolve(this.context.workspaceState.update(key, value))
-    });
+    };
+    this.sessionStore = new TraceSessionStore(this.workspaceStorage);
+    this.breakpointService = new BreakpointService(
+      this.workspaceStorage,
+      this.navigationService
+    );
     this.treeProvider = new TraceTreeProvider(this.sessionStore);
     this.treeView = vscode.window.createTreeView(TRACE_VIEW_ID, {
       treeDataProvider: this.treeProvider,
       showCollapseAll: false
     });
 
-    this.disposables.push(this.navigationService, this.treeProvider, this.treeView);
+    this.disposables.push(
+      this.navigationService,
+      this.breakpointService,
+      this.treeProvider,
+      this.treeView
+    );
     this.registerCommands();
   }
 
@@ -76,6 +91,12 @@ class DeepTraceExtensionController implements vscode.Disposable {
     this.registerCommand(REVEAL_CURRENT_STEP_COMMAND, () => this.revealCurrentStep());
     this.registerCommand(GO_TO_DEFINITION_COMMAND, () =>
       this.goToDefinitionFromCurrentStep()
+    );
+    this.registerCommand(SET_BREAKPOINTS_COMMAND, () =>
+      this.setTraceBreakpoints()
+    );
+    this.registerCommand(CLEAR_BREAKPOINTS_COMMAND, () =>
+      this.clearTraceBreakpoints()
     );
     this.registerCommand(SELECT_STEP_COMMAND, (stepIndex: unknown) =>
       this.selectStep(Number(stepIndex))
@@ -187,6 +208,61 @@ class DeepTraceExtensionController implements vscode.Disposable {
     } catch (error: unknown) {
       void vscode.window.showErrorMessage(
         `Unable to open the definition: ${this.getErrorMessage(error)}`
+      );
+    }
+  }
+
+  /**
+   * Adds debugger breakpoints to every unique line in the active trace.
+   */
+  private async setTraceBreakpoints(): Promise<void> {
+    if (!this.sessionStore.hasSession()) {
+      void vscode.window.showInformationMessage(NO_TRACE_MESSAGE);
+      return;
+    }
+
+    try {
+      const addedCount = await this.breakpointService.setBreakpointsForSteps(
+        this.sessionStore.getSteps()
+      );
+
+      if (addedCount === 0) {
+        void vscode.window.showInformationMessage(
+          "All trace breakpoints are already set."
+        );
+        return;
+      }
+
+      void vscode.window.showInformationMessage(
+        `Set ${addedCount} trace breakpoint${addedCount === 1 ? "" : "s"}.`
+      );
+    } catch (error: unknown) {
+      void vscode.window.showErrorMessage(
+        `Unable to set trace breakpoints: ${this.getErrorMessage(error)}`
+      );
+    }
+  }
+
+  /**
+   * Removes debugger breakpoints that were added by this extension.
+   */
+  private async clearTraceBreakpoints(): Promise<void> {
+    try {
+      const removedCount = await this.breakpointService.clearManagedBreakpoints();
+
+      if (removedCount === 0) {
+        void vscode.window.showInformationMessage(
+          "No Deep Trace breakpoints were found."
+        );
+        return;
+      }
+
+      void vscode.window.showInformationMessage(
+        `Cleared ${removedCount} trace breakpoint${removedCount === 1 ? "" : "s"}.`
+      );
+    } catch (error: unknown) {
+      void vscode.window.showErrorMessage(
+        `Unable to clear trace breakpoints: ${this.getErrorMessage(error)}`
       );
     }
   }
