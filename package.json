@@ -134,6 +134,28 @@
         "category": "Deep Trace"
       }
     ],
+    "configuration": {
+      "title": "Deep Trace",
+      "properties": {
+        "deepTrace.tabNavigation": {
+          "type": "boolean",
+          "default": true,
+          "description": "Use Tab / Shift+Tab to move to the next / previous trace step while the cursor is on the current step line."
+        }
+      }
+    },
+    "keybindings": [
+      {
+        "command": "deepTrace.nextStep",
+        "key": "tab",
+        "when": "deepTrace.canGoNextFromCursor && editorTextFocus && !editorHasSelection && !editorReadonly && !suggestWidgetVisible && !inlineSuggestionVisible && !inlineEditIsVisible && !inSnippetMode && !editorTabMovesFocus && config.deepTrace.tabNavigation"
+      },
+      {
+        "command": "deepTrace.previousStep",
+        "key": "shift+tab",
+        "when": "deepTrace.canGoPreviousFromCursor && editorTextFocus && !editorHasSelection && !editorReadonly && !suggestWidgetVisible && !inlineSuggestionVisible && !inlineEditIsVisible && !inSnippetMode && !editorTabMovesFocus && config.deepTrace.tabNavigation"
+      }
+    ],
     "menus": {
       "view/title": [
         {

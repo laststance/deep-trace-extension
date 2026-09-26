@@ -6,6 +6,8 @@ Replay deep-trace Markdown tables as native VS Code editor navigation steps.
 
 - **Load trace from clipboard** — Paste a deep-trace Markdown table and instantly navigate through execution steps.
 - **Step-by-step navigation** — Move forward and backward through trace entries with Next / Previous commands.
+- **Inline step annotation** — The current step's description is shown right above its line, with `prev` / `next` actions.
+- **Tab navigation** — While the cursor is on the current step line, `Tab` / `Shift+Tab` moves to the next / previous step.
 - **Go to Definition** — Jump directly to the source location of the current trace step.
 - **Trace Breakpoints** — Set or clear debugger breakpoints for every trace target line.
 - **Activity bar panel** — Dedicated sidebar view showing the full trace as a tree.
@@ -46,6 +48,23 @@ Accepted header aliases include:
 | `Deep Trace: Go to Definition from Current Step` | Jump to the definition of the current step |
 | `Deep Trace: Set Trace Breakpoints` | Add debugger breakpoints to each unique trace line |
 | `Deep Trace: Clear Trace Breakpoints` | Remove breakpoints previously added by Deep Trace |
+
+## Settings
+
+| Setting | Default | Description |
+|---------|---------|-------------|
+| `deepTrace.tabNavigation` | `true` | Use `Tab` / `Shift+Tab` to move between steps while the cursor is on the current step line. Elsewhere `Tab` indents as usual. |
+
+The inline annotation is rendered as a CodeLens, so it requires `editor.codeLens` to be enabled.
+
+Its color and size follow your color theme's CodeLens style. If the annotation is hard to read, override it in your `settings.json` (this also affects other CodeLenses such as reference counts):
+
+```jsonc
+"workbench.colorCustomizations": {
+  "editorCodeLens.foreground": "#e5c07b"
+},
+"editor.codeLensFontSize": 13
+```
 
 ## Requirements
 

@@ -6,6 +6,7 @@ import { BreakpointService } from "./services/breakpointService";
 import { DefinitionService } from "./services/definitionService";
 import { NavigationService } from "./services/navigationService";
 import { TraceSessionStore, type SessionStorage } from "./state/traceSessionStore";
+import { StepAnnotationProvider } from "./views/stepAnnotationProvider";
 import { TraceTreeItem, TraceTreeProvider } from "./views/traceTreeProvider";
 
 const LOAD_TRACE_COMMAND = "deepTrace.loadFromClipboard";
@@ -30,6 +31,7 @@ class DeepTraceExtensionController implements vscode.Disposable {
   private readonly breakpointService: BreakpointService;
   private readonly treeProvider: TraceTreeProvider;
   private readonly treeView: vscode.TreeView<TraceTreeItem>;
+  private readonly stepAnnotationProvider: StepAnnotationProvider;
   private readonly disposables: vscode.Disposable[] = [];
 
   /**
@@ -51,12 +53,17 @@ class DeepTraceExtensionController implements vscode.Disposable {
       treeDataProvider: this.treeProvider,
       showCollapseAll: false
     });
+    this.stepAnnotationProvider = new StepAnnotationProvider(
+      this.sessionStore,
+      this.navigationService
+    );
 
     this.disposables.push(
       this.navigationService,
       this.breakpointService,
       this.treeProvider,
-      this.treeView
+      this.treeView,
+      this.stepAnnotationProvider
     );
     this.registerCommands();
   }
