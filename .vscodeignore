@@ -1,5 +1,6 @@
 .vscode/**
 .serena/**
+.idea/**
 logs/**
 src/**
 docs/**
@@ -11,5 +12,6 @@ CLAUDE.md
 tsconfig.json
 vitest.config.ts
 pnpm-lock.yaml
+pnpm-workspace.yaml
 *.vsix
 **/*.map
