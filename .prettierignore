@@ -1,0 +1,6 @@
+pnpm-lock.yaml
+out
+coverage
+.fallow
+*.vsix
+skills/deep-trace/SKILL.md

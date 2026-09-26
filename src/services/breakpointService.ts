@@ -1,32 +1,33 @@
-import * as vscode from "vscode";
+import * as vscode from 'vscode'
 
-import type { TraceStep } from "../models/traceStep";
-import type { SessionStorage } from "../state/traceSessionStore";
-import type { NavigationService } from "./navigationService";
+import type { TraceStep } from '../models/traceStep'
+import type { SessionStorage } from '../state/traceSessionStore'
 
-export const TRACE_BREAKPOINT_STORAGE_KEY = "deepTrace.breakpoints";
+import type { NavigationService } from './navigationService'
 
-const ONE_BASED_INDEX_OFFSET = 1;
-const FIRST_CHARACTER_INDEX = 0;
-const MINIMUM_LINE_INDEX = 0;
+export const TRACE_BREAKPOINT_STORAGE_KEY = 'deepTrace.breakpoints'
+
+const ONE_BASED_INDEX_OFFSET = 1
+const FIRST_CHARACTER_INDEX = 0
+const MINIMUM_LINE_INDEX = 0
 
 type TraceBreakpointSnapshot = {
-  ids: string[];
-};
+  ids: string[]
+}
 
 type TraceBreakpointTarget = {
-  uri: vscode.Uri;
-  zeroBasedLine: number;
-  locationKey: string;
-};
+  uri: vscode.Uri
+  zeroBasedLine: number
+  locationKey: string
+}
 
-type TraceLocationResolver = Pick<NavigationService, "resolveTraceUri">;
+type TraceLocationResolver = Pick<NavigationService, 'resolveTraceUri'>
 
 /**
  * Manages source breakpoints that were created from the active Deep Trace session.
  */
 export class BreakpointService implements vscode.Disposable {
-  private readonly disposables: vscode.Disposable[] = [];
+  private readonly disposables: vscode.Disposable[] = []
 
   /**
    * Creates a service that can translate trace steps into VS Code source breakpoints.
@@ -38,13 +39,13 @@ export class BreakpointService implements vscode.Disposable {
    */
   public constructor(
     private readonly storage: SessionStorage,
-    private readonly traceLocationResolver: TraceLocationResolver
+    private readonly traceLocationResolver: TraceLocationResolver,
   ) {
     this.disposables.push(
       vscode.debug.onDidChangeBreakpoints(() => {
-        void this.pruneMissingManagedBreakpointIds();
-      })
-    );
+        void this.pruneMissingManagedBreakpointIds()
+      }),
+    )
   }
 
   /**
@@ -58,36 +59,36 @@ export class BreakpointService implements vscode.Disposable {
    * // => 1
    */
   public async setBreakpointsForSteps(
-    steps: readonly TraceStep[]
+    steps: readonly TraceStep[],
   ): Promise<number> {
-    await this.pruneMissingManagedBreakpointIds();
+    await this.pruneMissingManagedBreakpointIds()
 
-    const traceTargets = this.createUniqueTraceTargets(steps);
+    const traceTargets = this.createUniqueTraceTargets(steps)
     const existingLocationKeys = new Set(
       this.getSourceBreakpoints().map((breakpoint) =>
         createLocationKey(
           breakpoint.location.uri,
-          breakpoint.location.range.start.line
-        )
-      )
-    );
+          breakpoint.location.range.start.line,
+        ),
+      ),
+    )
     const breakpointsToAdd = traceTargets
       .filter((target) => !existingLocationKeys.has(target.locationKey))
-      .map((target) => createSourceBreakpoint(target.uri, target.zeroBasedLine));
+      .map((target) => createSourceBreakpoint(target.uri, target.zeroBasedLine))
 
     if (breakpointsToAdd.length === 0) {
-      return 0;
+      return 0
     }
 
-    vscode.debug.addBreakpoints(breakpointsToAdd);
+    vscode.debug.addBreakpoints(breakpointsToAdd)
     await this.saveManagedBreakpointIds(
       new Set([
         ...this.getManagedBreakpointIds(),
-        ...getBreakpointIds(breakpointsToAdd)
-      ])
-    );
+        ...getBreakpointIds(breakpointsToAdd),
+      ]),
+    )
 
-    return breakpointsToAdd.length;
+    return breakpointsToAdd.length
   }
 
   /**
@@ -100,22 +101,22 @@ export class BreakpointService implements vscode.Disposable {
    * // => 3
    */
   public async clearManagedBreakpoints(): Promise<number> {
-    const managedBreakpointIds = this.getManagedBreakpointIds();
+    const managedBreakpointIds = this.getManagedBreakpointIds()
 
     if (managedBreakpointIds.size === 0) {
-      return 0;
+      return 0
     }
 
-    const breakpointsToRemove = this.getSourceBreakpoints().filter((breakpoint) =>
-      managedBreakpointIds.has(breakpoint.id)
-    );
+    const breakpointsToRemove = this.getSourceBreakpoints().filter(
+      (breakpoint) => managedBreakpointIds.has(breakpoint.id),
+    )
 
     if (breakpointsToRemove.length > 0) {
-      vscode.debug.removeBreakpoints(breakpointsToRemove);
+      vscode.debug.removeBreakpoints(breakpointsToRemove)
     }
 
-    await this.saveManagedBreakpointIds(new Set());
-    return breakpointsToRemove.length;
+    await this.saveManagedBreakpointIds(new Set())
+    return breakpointsToRemove.length
   }
 
   /**
@@ -127,7 +128,7 @@ export class BreakpointService implements vscode.Disposable {
    */
   public dispose(): void {
     for (const disposable of this.disposables) {
-      disposable.dispose();
+      disposable.dispose()
     }
   }
 
@@ -140,25 +141,25 @@ export class BreakpointService implements vscode.Disposable {
    * // => [{ uri, zeroBasedLine: 0, locationKey }]
    */
   private createUniqueTraceTargets(
-    steps: readonly TraceStep[]
+    steps: readonly TraceStep[],
   ): TraceBreakpointTarget[] {
-    const targets = new Map<string, TraceBreakpointTarget>();
+    const targets = new Map<string, TraceBreakpointTarget>()
 
     for (const step of steps) {
-      const uri = this.traceLocationResolver.resolveTraceUri(step.file);
-      const zeroBasedLine = toZeroBasedLine(step.line);
-      const locationKey = createLocationKey(uri, zeroBasedLine);
+      const uri = this.traceLocationResolver.resolveTraceUri(step.file)
+      const zeroBasedLine = toZeroBasedLine(step.line)
+      const locationKey = createLocationKey(uri, zeroBasedLine)
 
       if (!targets.has(locationKey)) {
         targets.set(locationKey, {
           uri,
           zeroBasedLine,
-          locationKey
-        });
+          locationKey,
+        })
       }
     }
 
-    return [...targets.values()];
+    return [...targets.values()]
   }
 
   /**
@@ -170,10 +171,10 @@ export class BreakpointService implements vscode.Disposable {
    */
   private getManagedBreakpointIds(): Set<string> {
     const snapshot = this.storage.get<TraceBreakpointSnapshot | undefined>(
-      TRACE_BREAKPOINT_STORAGE_KEY
-    );
+      TRACE_BREAKPOINT_STORAGE_KEY,
+    )
 
-    return new Set(snapshot?.ids ?? []);
+    return new Set(snapshot?.ids ?? [])
   }
 
   /**
@@ -185,16 +186,16 @@ export class BreakpointService implements vscode.Disposable {
    * // => undefined
    */
   private async saveManagedBreakpointIds(
-    breakpointIds: ReadonlySet<string>
+    breakpointIds: ReadonlySet<string>,
   ): Promise<void> {
     const snapshot =
       breakpointIds.size > 0
         ? {
-            ids: [...breakpointIds]
+            ids: [...breakpointIds],
           }
-        : undefined;
+        : undefined
 
-    await this.storage.update(TRACE_BREAKPOINT_STORAGE_KEY, snapshot);
+    await this.storage.update(TRACE_BREAKPOINT_STORAGE_KEY, snapshot)
   }
 
   /**
@@ -205,23 +206,23 @@ export class BreakpointService implements vscode.Disposable {
    * // => undefined
    */
   private async pruneMissingManagedBreakpointIds(): Promise<void> {
-    const managedBreakpointIds = this.getManagedBreakpointIds();
+    const managedBreakpointIds = this.getManagedBreakpointIds()
 
     if (managedBreakpointIds.size === 0) {
-      return;
+      return
     }
 
     const existingBreakpointIds = new Set(
-      getBreakpointIds(this.getSourceBreakpoints())
-    );
+      getBreakpointIds(this.getSourceBreakpoints()),
+    )
     const remainingManagedBreakpointIds = new Set(
       [...managedBreakpointIds].filter((breakpointId) =>
-        existingBreakpointIds.has(breakpointId)
-      )
-    );
+        existingBreakpointIds.has(breakpointId),
+      ),
+    )
 
     if (remainingManagedBreakpointIds.size !== managedBreakpointIds.size) {
-      await this.saveManagedBreakpointIds(remainingManagedBreakpointIds);
+      await this.saveManagedBreakpointIds(remainingManagedBreakpointIds)
     }
   }
 
@@ -233,7 +234,7 @@ export class BreakpointService implements vscode.Disposable {
    * // => [SourceBreakpoint]
    */
   private getSourceBreakpoints(): vscode.SourceBreakpoint[] {
-    return vscode.debug.breakpoints.filter(isSourceBreakpoint);
+    return vscode.debug.breakpoints.filter(isSourceBreakpoint)
   }
 }
 
@@ -246,7 +247,7 @@ export class BreakpointService implements vscode.Disposable {
  * // => 2
  */
 function toZeroBasedLine(line: number): number {
-  return Math.max(line - ONE_BASED_INDEX_OFFSET, MINIMUM_LINE_INDEX);
+  return Math.max(line - ONE_BASED_INDEX_OFFSET, MINIMUM_LINE_INDEX)
 }
 
 /**
@@ -260,15 +261,15 @@ function toZeroBasedLine(line: number): number {
  */
 function createSourceBreakpoint(
   uri: vscode.Uri,
-  zeroBasedLine: number
+  zeroBasedLine: number,
 ): vscode.SourceBreakpoint {
   return new vscode.SourceBreakpoint(
     new vscode.Location(
       uri,
-      new vscode.Position(zeroBasedLine, FIRST_CHARACTER_INDEX)
+      new vscode.Position(zeroBasedLine, FIRST_CHARACTER_INDEX),
     ),
-    true
-  );
+    true,
+  )
 }
 
 /**
@@ -281,7 +282,7 @@ function createSourceBreakpoint(
  * // => "file:///tmp/app.ts#4"
  */
 function createLocationKey(uri: vscode.Uri, zeroBasedLine: number): string {
-  return `${uri.toString()}#${zeroBasedLine}`;
+  return `${uri.toString()}#${zeroBasedLine}`
 }
 
 /**
@@ -292,10 +293,8 @@ function createLocationKey(uri: vscode.Uri, zeroBasedLine: number): string {
  * getBreakpointIds([breakpoint])
  * // => ["breakpoint-1"]
  */
-function getBreakpointIds(
-  breakpoints: readonly vscode.Breakpoint[]
-): string[] {
-  return breakpoints.map((breakpoint) => breakpoint.id);
+function getBreakpointIds(breakpoints: readonly vscode.Breakpoint[]): string[] {
+  return breakpoints.map((breakpoint) => breakpoint.id)
 }
 
 /**
@@ -307,7 +306,7 @@ function getBreakpointIds(
  * // => true
  */
 function isSourceBreakpoint(
-  breakpoint: vscode.Breakpoint
+  breakpoint: vscode.Breakpoint,
 ): breakpoint is vscode.SourceBreakpoint {
-  return breakpoint instanceof vscode.SourceBreakpoint;
+  return breakpoint instanceof vscode.SourceBreakpoint
 }

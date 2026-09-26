@@ -1,59 +1,59 @@
-import path from "node:path";
+import path from 'node:path'
 
-import type { TraceStep } from "../models/traceStep";
+import type { TraceStep } from '../models/traceStep'
 
-const MARKDOWN_CODE_FENCE = "```";
-const MARKDOWN_TABLE_DELIMITER = "|";
-const MINIMUM_TABLE_ROWS = 2;
-const HEADER_ROW_INDEX = 0;
-const SEPARATOR_ROW_INDEX = 1;
-const FIRST_TRACE_STEP_NUMBER = 1;
-const MINIMUM_ALLOWED_POSITION = 1;
+const MARKDOWN_CODE_FENCE = '```'
+const MARKDOWN_TABLE_DELIMITER = '|'
+const MINIMUM_TABLE_ROWS = 2
+const HEADER_ROW_INDEX = 0
+const SEPARATOR_ROW_INDEX = 1
+const FIRST_TRACE_STEP_NUMBER = 1
+const MINIMUM_ALLOWED_POSITION = 1
 
-const FILE_HEADER_ALIASES = new Set(["file", "path"]);
-const LINE_HEADER_ALIASES = new Set(["line", "ln"]);
-const COLUMN_HEADER_ALIASES = new Set(["col", "column"]);
-const REASON_HEADER_ALIASES = new Set(["reason", "why", "summary"]);
+const FILE_HEADER_ALIASES = new Set(['file', 'path'])
+const LINE_HEADER_ALIASES = new Set(['line', 'ln'])
+const COLUMN_HEADER_ALIASES = new Set(['col', 'column'])
+const REASON_HEADER_ALIASES = new Set(['reason', 'why', 'summary'])
 
-export const DEFAULT_TRACE_COLUMN = 1;
+export const DEFAULT_TRACE_COLUMN = 1
 
 /**
  * Converts a deep-trace Markdown table into ordered trace steps.
  */
 export function parseTraceMarkdown(markdown: string): TraceStep[] {
-  const tableRows = getTableRows(markdown);
+  const tableRows = getTableRows(markdown)
 
   if (tableRows.length < MINIMUM_TABLE_ROWS) {
-    return [];
+    return []
   }
 
-  const headerCells = tableRows[HEADER_ROW_INDEX] ?? [];
+  const headerCells = tableRows[HEADER_ROW_INDEX] ?? []
   const dataRows = tableRows
     .slice(SEPARATOR_ROW_INDEX + 1)
-    .filter((rowCells) => rowCells.some((cell) => cell.length > 0));
-  const headerIndexes = resolveHeaderIndexes(headerCells);
+    .filter((rowCells) => rowCells.some((cell) => cell.length > 0))
+  const headerIndexes = resolveHeaderIndexes(headerCells)
 
   return dataRows.map((rowCells, rowIndex) => {
-    const rawValues = buildRawValues(headerCells, rowCells);
+    const rawValues = buildRawValues(headerCells, rowCells)
     const file = getRequiredCellValue(
       rowCells,
       headerIndexes.file,
-      "The trace table must include a file or path column."
-    );
+      'The trace table must include a file or path column.',
+    )
     const line = parseTracePosition(
       getRequiredCellValue(
         rowCells,
         headerIndexes.line,
-        "The trace table must include a line column."
+        'The trace table must include a line column.',
       ),
-      `line for row ${rowIndex + FIRST_TRACE_STEP_NUMBER}`
-    );
+      `line for row ${rowIndex + FIRST_TRACE_STEP_NUMBER}`,
+    )
     const column = parseOptionalTracePosition(
       getOptionalCellValue(rowCells, headerIndexes.column),
       DEFAULT_TRACE_COLUMN,
-      `column for row ${rowIndex + FIRST_TRACE_STEP_NUMBER}`
-    );
-    const reason = getOptionalCellValue(rowCells, headerIndexes.reason) ?? "";
+      `column for row ${rowIndex + FIRST_TRACE_STEP_NUMBER}`,
+    )
+    const reason = getOptionalCellValue(rowCells, headerIndexes.reason) ?? ''
 
     return {
       id: createTraceStepId(rowIndex, file, line, column),
@@ -63,9 +63,9 @@ export function parseTraceMarkdown(markdown: string): TraceStep[] {
       line,
       column,
       reason,
-      raw: rawValues
-    };
-  });
+      raw: rawValues,
+    }
+  })
 }
 
 /**
@@ -75,10 +75,10 @@ function getTableRows(markdown: string): string[][] {
   const normalizedLines = stripCodeFence(markdown)
     .split(/\r?\n/u)
     .map((line) => line.trim())
-    .filter((line) => line.includes(MARKDOWN_TABLE_DELIMITER));
+    .filter((line) => line.includes(MARKDOWN_TABLE_DELIMITER))
 
   if (normalizedLines.length < MINIMUM_TABLE_ROWS) {
-    return [];
+    return []
   }
 
   return normalizedLines
@@ -86,125 +86,128 @@ function getTableRows(markdown: string): string[][] {
     .filter((rowCells) => rowCells.length > 0)
     .filter((rowCells, rowIndex) => {
       if (rowIndex !== SEPARATOR_ROW_INDEX) {
-        return true;
+        return true
       }
 
-      return isMarkdownSeparatorRow(rowCells);
-    });
+      return isMarkdownSeparatorRow(rowCells)
+    })
 }
 
 /**
  * Removes a surrounding fenced code block so the raw table can be parsed.
  */
 function stripCodeFence(markdown: string): string {
-  const trimmedMarkdown = markdown.trim();
+  const trimmedMarkdown = markdown.trim()
 
   if (!trimmedMarkdown.startsWith(MARKDOWN_CODE_FENCE)) {
-    return trimmedMarkdown;
+    return trimmedMarkdown
   }
 
-  const markdownLines = trimmedMarkdown.split(/\r?\n/u);
+  const markdownLines = trimmedMarkdown.split(/\r?\n/u)
 
   if (markdownLines.length < MINIMUM_TABLE_ROWS) {
-    return trimmedMarkdown;
+    return trimmedMarkdown
   }
 
-  const firstLine = markdownLines[HEADER_ROW_INDEX]?.trim() ?? "";
-  const lastLine = markdownLines.at(-1)?.trim() ?? "";
+  const firstLine = markdownLines[HEADER_ROW_INDEX]?.trim() ?? ''
+  const lastLine = markdownLines.at(-1)?.trim() ?? ''
 
-  if (!firstLine.startsWith(MARKDOWN_CODE_FENCE) || lastLine !== MARKDOWN_CODE_FENCE) {
-    return trimmedMarkdown;
+  if (
+    !firstLine.startsWith(MARKDOWN_CODE_FENCE) ||
+    lastLine !== MARKDOWN_CODE_FENCE
+  ) {
+    return trimmedMarkdown
   }
 
-  return markdownLines.slice(1, -1).join("\n");
+  return markdownLines.slice(1, -1).join('\n')
 }
 
 /**
  * Breaks a Markdown table row into trimmed cells.
  */
 function splitMarkdownRow(row: string): string[] {
-  const trimmedRow = row.trim();
-  const withoutLeadingDelimiter = trimmedRow.startsWith(MARKDOWN_TABLE_DELIMITER)
+  const trimmedRow = row.trim()
+  const withoutLeadingDelimiter = trimmedRow.startsWith(
+    MARKDOWN_TABLE_DELIMITER,
+  )
     ? trimmedRow.slice(1)
-    : trimmedRow;
-  const withoutOuterDelimiters = withoutLeadingDelimiter.endsWith(MARKDOWN_TABLE_DELIMITER)
+    : trimmedRow
+  const withoutOuterDelimiters = withoutLeadingDelimiter.endsWith(
+    MARKDOWN_TABLE_DELIMITER,
+  )
     ? withoutLeadingDelimiter.slice(0, -1)
-    : withoutLeadingDelimiter;
+    : withoutLeadingDelimiter
 
   return withoutOuterDelimiters
     .split(MARKDOWN_TABLE_DELIMITER)
-    .map((cell) => cell.trim());
+    .map((cell) => cell.trim())
 }
 
 /**
  * Checks whether a row is the Markdown separator line.
  */
 function isMarkdownSeparatorRow(rowCells: string[]): boolean {
-  return rowCells.every((cell) => /^:?-{3,}:?$/u.test(cell));
+  return rowCells.every((cell) => /^:?-{3,}:?$/u.test(cell))
 }
 
 /**
  * Finds the canonical header indexes used by the parser.
  */
 function resolveHeaderIndexes(headerCells: string[]): {
-  file: number | undefined;
-  line: number | undefined;
-  column: number | undefined;
-  reason: number | undefined;
+  file: number | undefined
+  line: number | undefined
+  column: number | undefined
+  reason: number | undefined
 } {
-  let fileIndex: number | undefined;
-  let lineIndex: number | undefined;
-  let columnIndex: number | undefined;
-  let reasonIndex: number | undefined;
+  let fileIndex: number | undefined
+  let lineIndex: number | undefined
+  let columnIndex: number | undefined
+  let reasonIndex: number | undefined
 
   headerCells.forEach((headerCell, index) => {
-    const normalizedHeader = normalizeHeader(headerCell);
+    const normalizedHeader = normalizeHeader(headerCell)
 
     if (FILE_HEADER_ALIASES.has(normalizedHeader)) {
-      fileIndex = index;
-      return;
+      fileIndex = index
+      return
     }
 
     if (LINE_HEADER_ALIASES.has(normalizedHeader)) {
-      lineIndex = index;
-      return;
+      lineIndex = index
+      return
     }
 
     if (COLUMN_HEADER_ALIASES.has(normalizedHeader)) {
-      columnIndex = index;
-      return;
+      columnIndex = index
+      return
     }
 
     if (REASON_HEADER_ALIASES.has(normalizedHeader)) {
-      reasonIndex = index;
+      reasonIndex = index
     }
-  });
+  })
 
   if (fileIndex === undefined) {
-    throw new Error("The trace table must include a file or path column.");
+    throw new Error('The trace table must include a file or path column.')
   }
 
   if (lineIndex === undefined) {
-    throw new Error("The trace table must include a line column.");
+    throw new Error('The trace table must include a line column.')
   }
 
   return {
     file: fileIndex,
     line: lineIndex,
     column: columnIndex,
-    reason: reasonIndex
-  };
+    reason: reasonIndex,
+  }
 }
 
 /**
  * Normalizes a header name so small wording differences map to the same meaning.
  */
 function normalizeHeader(headerCell: string): string {
-  return headerCell
-    .replace(/`/gu, "")
-    .trim()
-    .toLowerCase()
-    .replace(/\s+/gu, "");
+  return headerCell.replace(/`/gu, '').trim().toLowerCase().replace(/\s+/gu, '')
 }
 
 /**
@@ -212,12 +215,15 @@ function normalizeHeader(headerCell: string): string {
  */
 function buildRawValues(
   headerCells: string[],
-  rowCells: string[]
+  rowCells: string[],
 ): Record<string, string> {
-  return headerCells.reduce<Record<string, string>>((accumulator, headerCell, index) => {
-    accumulator[headerCell] = rowCells[index] ?? "";
-    return accumulator;
-  }, {});
+  return headerCells.reduce<Record<string, string>>(
+    (accumulator, headerCell, index) => {
+      accumulator[headerCell] = rowCells[index] ?? ''
+      return accumulator
+    },
+    {},
+  )
 }
 
 /**
@@ -226,15 +232,15 @@ function buildRawValues(
 function getRequiredCellValue(
   rowCells: string[],
   columnIndex: number | undefined,
-  errorMessage: string
+  errorMessage: string,
 ): string {
-  const cellValue = getOptionalCellValue(rowCells, columnIndex);
+  const cellValue = getOptionalCellValue(rowCells, columnIndex)
 
   if (!cellValue) {
-    throw new Error(errorMessage);
+    throw new Error(errorMessage)
   }
 
-  return cellValue;
+  return cellValue
 }
 
 /**
@@ -242,27 +248,27 @@ function getRequiredCellValue(
  */
 function getOptionalCellValue(
   rowCells: string[],
-  columnIndex: number | undefined
+  columnIndex: number | undefined,
 ): string | undefined {
   if (columnIndex === undefined) {
-    return undefined;
+    return undefined
   }
 
-  const cellValue = rowCells[columnIndex]?.trim();
-  return cellValue ? cellValue : undefined;
+  const cellValue = rowCells[columnIndex]?.trim()
+  return cellValue ? cellValue : undefined
 }
 
 /**
  * Parses a required trace position such as a line number.
  */
 function parseTracePosition(value: string, label: string): number {
-  const parsedNumber = Number.parseInt(value, 10);
+  const parsedNumber = Number.parseInt(value, 10)
 
   if (Number.isNaN(parsedNumber) || parsedNumber < MINIMUM_ALLOWED_POSITION) {
-    throw new Error(`The ${label} must be a positive integer.`);
+    throw new Error(`The ${label} must be a positive integer.`)
   }
 
-  return parsedNumber;
+  return parsedNumber
 }
 
 /**
@@ -271,13 +277,13 @@ function parseTracePosition(value: string, label: string): number {
 function parseOptionalTracePosition(
   value: string | undefined,
   fallbackValue: number,
-  label: string
+  label: string,
 ): number {
   if (!value) {
-    return fallbackValue;
+    return fallbackValue
   }
 
-  return parseTracePosition(value, label);
+  return parseTracePosition(value, label)
 }
 
 /**
@@ -287,16 +293,18 @@ function createTraceStepId(
   rowIndex: number,
   file: string,
   line: number,
-  column: number
+  column: number,
 ): string {
-  const normalizedFile = file.replace(/[^a-z0-9]+/giu, "-").replace(/^-+|-+$/gu, "");
-  return `trace-step-${rowIndex + FIRST_TRACE_STEP_NUMBER}-${normalizedFile}-${line}-${column}`;
+  const normalizedFile = file
+    .replace(/[^a-z0-9]+/giu, '-')
+    .replace(/^-+|-+$/gu, '')
+  return `trace-step-${rowIndex + FIRST_TRACE_STEP_NUMBER}-${normalizedFile}-${line}-${column}`
 }
 
 /**
  * Builds the title displayed in the trace view.
  */
 function buildTraceTitle(file: string, line: number, reason: string): string {
-  const fallbackTitle = `${path.basename(file)}:${line}`;
-  return reason.trim() || fallbackTitle;
+  const fallbackTitle = `${path.basename(file)}:${line}`
+  return reason.trim() || fallbackTitle
 }

@@ -9,9 +9,7 @@
         "kind": "build",
         "isDefault": true
       },
-      "problemMatcher": [
-        "$tsc"
-      ],
+      "problemMatcher": ["$tsc"],
       "presentation": {
         "reveal": "silent"
       }
@@ -21,9 +19,7 @@
       "type": "shell",
       "command": "pnpm watch",
       "isBackground": true,
-      "problemMatcher": [
-        "$tsc-watch"
-      ],
+      "problemMatcher": ["$tsc-watch"],
       "presentation": {
         "reveal": "never"
       }

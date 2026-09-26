@@ -1,10 +1,10 @@
-import * as vscode from "vscode";
+import * as vscode from 'vscode'
 
-import type { TraceStep } from "../models/traceStep";
-import { TraceSessionStore } from "../state/traceSessionStore";
+import type { TraceStep } from '../models/traceStep'
+import type { TraceSessionStore } from '../state/traceSessionStore'
 
-const TRACE_STEP_CONTEXT = "traceStep";
-const FIRST_VISIBLE_LEVEL = 1;
+const TRACE_STEP_CONTEXT = 'traceStep'
+const FIRST_VISIBLE_LEVEL = 1
 
 /**
  * Represents one visible node in the deep trace tree.
@@ -15,22 +15,31 @@ export class TraceTreeItem extends vscode.TreeItem {
    */
   public constructor(
     public readonly step: TraceStep,
-    isCurrentStep: boolean
+    isCurrentStep: boolean,
   ) {
-    super(`${step.index + FIRST_VISIBLE_LEVEL}. ${step.title}`, vscode.TreeItemCollapsibleState.None);
-    this.description = `${step.file}:${step.line}`;
+    super(
+      `${step.index + FIRST_VISIBLE_LEVEL}. ${step.title}`,
+      vscode.TreeItemCollapsibleState.None,
+    )
+    this.description = `${step.file}:${step.line}`
     this.tooltip = new vscode.MarkdownString(
-      [`**${step.title}**`, `${step.file}:${step.line}:${step.column}`, step.reason]
+      [
+        `**${step.title}**`,
+        `${step.file}:${step.line}:${step.column}`,
+        step.reason,
+      ]
         .filter((segment) => segment.length > 0)
-        .join("\n\n")
-    );
+        .join('\n\n'),
+    )
     this.command = {
-      command: "deepTrace.selectStep",
-      title: "Reveal Trace Step",
-      arguments: [step.index]
-    };
-    this.contextValue = TRACE_STEP_CONTEXT;
-    this.iconPath = new vscode.ThemeIcon(isCurrentStep ? "debug-step-over" : "circle-outline");
+      command: 'deepTrace.selectStep',
+      title: 'Reveal Trace Step',
+      arguments: [step.index],
+    }
+    this.contextValue = TRACE_STEP_CONTEXT
+    this.iconPath = new vscode.ThemeIcon(
+      isCurrentStep ? 'debug-step-over' : 'circle-outline',
+    )
   }
 }
 
@@ -42,28 +51,28 @@ export class TraceTreeProvider
 {
   private readonly treeDataEmitter = new vscode.EventEmitter<
     TraceTreeItem | undefined | void
-  >();
-  private readonly disposeStoreSubscription: () => void;
-  private items: TraceTreeItem[] = [];
+  >()
+  private readonly disposeStoreSubscription: () => void
+  private items: TraceTreeItem[] = []
 
-  public readonly onDidChangeTreeData = this.treeDataEmitter.event;
+  public readonly onDidChangeTreeData = this.treeDataEmitter.event
 
   /**
    * Creates a tree provider that always mirrors the session store.
    */
   public constructor(private readonly sessionStore: TraceSessionStore) {
-    this.rebuildItems();
+    this.rebuildItems()
     this.disposeStoreSubscription = this.sessionStore.onDidChange(() => {
-      this.rebuildItems();
-      this.treeDataEmitter.fire();
-    });
+      this.rebuildItems()
+      this.treeDataEmitter.fire()
+    })
   }
 
   /**
    * Returns the tree item representation for one element.
    */
   public getTreeItem(element: TraceTreeItem): vscode.TreeItem {
-    return element;
+    return element
   }
 
   /**
@@ -71,42 +80,42 @@ export class TraceTreeProvider
    */
   public getChildren(element?: TraceTreeItem): TraceTreeItem[] {
     if (element) {
-      return [];
+      return []
     }
 
-    return this.items;
+    return this.items
   }
 
   /**
    * Returns the parent for tree reveal support.
    */
   public getParent(_element: TraceTreeItem): TraceTreeItem | undefined {
-    return undefined;
+    return undefined
   }
 
   /**
    * Looks up the rendered tree item for a step index.
    */
   public getItemForStepIndex(stepIndex: number): TraceTreeItem | undefined {
-    return this.items.find((item) => item.step.index === stepIndex);
+    return this.items.find((item) => item.step.index === stepIndex)
   }
 
   /**
    * Releases tree events and store subscriptions.
    */
   public dispose(): void {
-    this.disposeStoreSubscription();
-    this.treeDataEmitter.dispose();
+    this.disposeStoreSubscription()
+    this.treeDataEmitter.dispose()
   }
 
   /**
    * Rebuilds the visible tree items from the latest session state.
    */
   private rebuildItems(): void {
-    const currentStepIndex = this.sessionStore.getCurrentStepIndex();
+    const currentStepIndex = this.sessionStore.getCurrentStepIndex()
 
-    this.items = this.sessionStore.getSteps().map(
-      (step) => new TraceTreeItem(step, step.index === currentStepIndex)
-    );
+    this.items = this.sessionStore
+      .getSteps()
+      .map((step) => new TraceTreeItem(step, step.index === currentStepIndex))
   }
 }

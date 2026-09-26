@@ -1,0 +1,44 @@
+{
+  "$schema": "./node_modules/fallow/schema.json",
+  "entry": [
+    "src/extension.ts",
+    "src/test/**/*.test.ts",
+    "vitest.config.mts",
+    "eslint.config.mjs"
+  ],
+  "health": {
+    "ignore": ["**/test/**"],
+    "coverage": "coverage/coverage-final.json"
+  },
+  "duplicates": {
+    "ignore": ["**/test/**"]
+  },
+  "framework": [
+    {
+      "name": "repository-tools",
+      "entryPoints": ["scripts/*.mjs"],
+      "entryPointRole": "support",
+      "toolingDependencies": ["typescript-compiler"]
+    }
+  ],
+  "usedClassMembers": [
+    {
+      "implements": "vscode.Disposable",
+      "members": ["dispose"]
+    },
+    {
+      "implements": "vscode.CodeLensProvider",
+      "members": ["onDidChangeCodeLenses", "provideCodeLenses"]
+    },
+    {
+      "implements": "vscode.TreeDataProvider",
+      "members": [
+        "onDidChangeTreeData",
+        "getTreeItem",
+        "getChildren",
+        "getParent"
+      ]
+    }
+  ],
+  "ignoreDependencies": ["typescript-compiler"]
+}

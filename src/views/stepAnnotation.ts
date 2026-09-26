@@ -1,22 +1,22 @@
-import type { TraceStep } from "../models/traceStep";
+import type { TraceStep } from '../models/traceStep'
 
-export const NEXT_STEP_COMMAND = "deepTrace.nextStep";
-export const PREVIOUS_STEP_COMMAND = "deepTrace.previousStep";
-export const MAX_ANNOTATION_LENGTH = 120;
-export const TAB_NAVIGATION_HINT = "Tab/Shift+Tab to navigate between steps";
+const NEXT_STEP_COMMAND = 'deepTrace.nextStep'
+const PREVIOUS_STEP_COMMAND = 'deepTrace.previousStep'
+const MAX_ANNOTATION_LENGTH = 120
+const TAB_NAVIGATION_HINT = 'Tab/Shift+Tab to navigate between steps'
 
-const ONE_BASED_INDEX_OFFSET = 1;
-const ELLIPSIS = "…";
+const ONE_BASED_INDEX_OFFSET = 1
+const ELLIPSIS = '…'
 
 /**
  * Editor-agnostic description of one CodeLens rendered above the current step line.
  */
 export type StepAnnotationLens = {
-  title: string;
-  tooltip: string;
+  title: string
+  tooltip: string
   /** Empty string renders the lens as plain, non-clickable text. */
-  commandId: string;
-};
+  commandId: string
+}
 
 /**
  * Builds the lenses shown above the current trace step: the description, then prev/next actions.
@@ -27,48 +27,48 @@ export type StepAnnotationLens = {
 export function buildStepAnnotationLenses(
   step: TraceStep,
   stepCount: number,
-  isTabNavigationEnabled: boolean
+  isTabNavigationEnabled: boolean,
 ): StepAnnotationLens[] {
-  const stepNumber = step.index + ONE_BASED_INDEX_OFFSET;
-  const navigationTooltip = isTabNavigationEnabled ? TAB_NAVIGATION_HINT : "";
+  const stepNumber = step.index + ONE_BASED_INDEX_OFFSET
+  const navigationTooltip = isTabNavigationEnabled ? TAB_NAVIGATION_HINT : ''
   const lenses: StepAnnotationLens[] = [
     {
       title: `${stepNumber}/${stepCount}  ${truncateAnnotationText(step.title)}`,
       tooltip: step.reason || step.title,
-      commandId: ""
-    }
-  ];
+      commandId: '',
+    },
+  ]
 
   // First step has nowhere to go back to
   if (step.index > 0) {
     lenses.push({
-      title: "$(arrow-left) prev",
+      title: '$(arrow-left) prev',
       tooltip: navigationTooltip,
-      commandId: PREVIOUS_STEP_COMMAND
-    });
+      commandId: PREVIOUS_STEP_COMMAND,
+    })
   }
 
   // Last step has nowhere to go forward to
   if (stepNumber < stepCount) {
     lenses.push({
-      title: "$(arrow-right) next",
+      title: '$(arrow-right) next',
       tooltip: navigationTooltip,
-      commandId: NEXT_STEP_COMMAND
-    });
+      commandId: NEXT_STEP_COMMAND,
+    })
   }
 
-  return lenses;
+  return lenses
 }
 
 /**
  * Shortens long descriptions because a CodeLens never wraps and would push actions off-screen.
  */
 export function truncateAnnotationText(text: string): string {
-  const singleLineText = text.replace(/\s+/gu, " ").trim();
+  const singleLineText = text.replace(/\s+/gu, ' ').trim()
 
   if (singleLineText.length <= MAX_ANNOTATION_LENGTH) {
-    return singleLineText;
+    return singleLineText
   }
 
-  return `${singleLineText.slice(0, MAX_ANNOTATION_LENGTH - ELLIPSIS.length)}${ELLIPSIS}`;
+  return `${singleLineText.slice(0, MAX_ANNOTATION_LENGTH - ELLIPSIS.length)}${ELLIPSIS}`
 }
