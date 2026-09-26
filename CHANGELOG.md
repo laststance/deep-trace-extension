@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.1.1] - 2026-09-26
+
+### Changed
+
+- Lower the minimum VS Code version to 1.100.0 so the extension installs in forks such as Cursor (VS Code 1.128.0 base). The bundled `chatSkills` skill is only picked up by hosts that support it
+
 ## [0.1.0] - 2026-09-26
 
 ### Added

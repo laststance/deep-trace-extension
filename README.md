@@ -93,7 +93,7 @@ Its color and size follow your color theme's CodeLens style. If the annotation i
 
 ## Requirements
 
-- VS Code 1.138.0 or later
+- VS Code 1.100.0 or later (including forks such as Cursor)
 
 ## Privacy
 

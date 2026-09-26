@@ -2,7 +2,7 @@
   "name": "deep-trace-navigation",
   "displayName": "Deep Trace Navigation",
   "description": "Replay deep-trace Markdown tables as native VS Code editor navigation steps.",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "publisher": "laststance",
   "license": "MIT",
   "pricing": "Free",
@@ -24,7 +24,7 @@
     "deep-trace"
   ],
   "engines": {
-    "vscode": "^1.138.0"
+    "vscode": "^1.100.0"
   },
   "categories": [
     "Debuggers",
@@ -210,7 +210,7 @@
   },
   "devDependencies": {
     "@types/node": "26.6.2",
-    "@types/vscode": "1.138.0",
+    "@types/vscode": "1.100.0",
     "@vitest/coverage-v8": "5.0.2",
     "@vscode/vsce": "^4.0.0",
     "eslint": "10.10.0",

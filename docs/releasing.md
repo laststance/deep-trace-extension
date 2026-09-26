@@ -55,7 +55,7 @@ Automating this in CI is tracked in [TODOS.md](../TODOS.md).
 
 - Publisher: `laststance`
 - Extension ID: `laststance.deep-trace-navigation`
-- VS Code compatibility: `^1.138.0`
+- VS Code compatibility: `^1.100.0`
 - Runtime dependencies: none
 - Package icon: `media/icon.png` (PNG, not SVG)
 - Excluded by `.vscodeignore`: source files, tests, docs, contributor guides, CI and tool configuration, coverage, logs, local editor settings, source maps, existing VSIX files, and local agent files
