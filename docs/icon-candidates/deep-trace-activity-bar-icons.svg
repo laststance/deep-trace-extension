@@ -1,0 +1,388 @@
+<svg width="900" height="960" viewBox="0 0 900 960" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="900" height="960" fill="#111111"/>
+  <text x="40" y="44" fill="#F5F5F5" font-family="-apple-system, BlinkMacSystemFont, 'SF Pro Display', sans-serif" font-size="24" font-weight="700">Deep Trace activity bar icon candidates</text>
+  <text x="40" y="70" fill="#A0A0A0" font-family="-apple-system, BlinkMacSystemFont, 'SF Pro Text', sans-serif" font-size="14">30 monochrome SVG concepts. Pick a number and I can turn it into media/trace.svg.</text>
+
+  <style>
+    .tile { fill: #1b1b1b; stroke: #383838; stroke-width: 1; }
+    .num { fill: #f2f2f2; font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', sans-serif; font-size: 13px; font-weight: 700; }
+    .label { fill: #9b9b9b; font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', sans-serif; font-size: 10px; font-weight: 600; }
+    .icon { stroke: #d7d7d7; stroke-width: 4; stroke-linecap: round; stroke-linejoin: round; }
+    .fill { fill: #d7d7d7; }
+  </style>
+
+  <g transform="translate(40 100)">
+    <rect class="tile" width="140" height="112" rx="12"/>
+    <text class="num" x="12" y="22">01</text>
+    <g class="icon" transform="translate(38 24)">
+      <path d="M16 14H42"/>
+      <path d="M16 32H34"/>
+      <path d="M16 50H26"/>
+      <circle cx="50" cy="14" r="6"/>
+      <circle cx="42" cy="32" r="6"/>
+      <circle cx="34" cy="50" r="6"/>
+    </g>
+    <text class="label" x="70" y="98" text-anchor="middle">trace list</text>
+  </g>
+
+  <g transform="translate(200 100)">
+    <rect class="tile" width="140" height="112" rx="12"/>
+    <text class="num" x="12" y="22">02</text>
+    <g class="icon" transform="translate(38 24)">
+      <path d="M14 52C14 30 30 34 30 16"/>
+      <path d="M30 34C42 34 50 28 50 16"/>
+      <path d="M30 34C42 34 50 40 50 52"/>
+      <circle cx="14" cy="52" r="5"/>
+      <circle cx="30" cy="16" r="5"/>
+      <circle cx="50" cy="16" r="5"/>
+      <circle cx="50" cy="52" r="5"/>
+    </g>
+    <text class="label" x="70" y="98" text-anchor="middle">branch path</text>
+  </g>
+
+  <g transform="translate(360 100)">
+    <rect class="tile" width="140" height="112" rx="12"/>
+    <text class="num" x="12" y="22">03</text>
+    <g class="icon" transform="translate(38 24)">
+      <path d="M18 14H42V26H28V38H48V50H22"/>
+      <circle cx="18" cy="14" r="5"/>
+      <circle cx="28" cy="38" r="5"/>
+      <circle cx="22" cy="50" r="5"/>
+    </g>
+    <text class="label" x="70" y="98" text-anchor="middle">step ladder</text>
+  </g>
+
+  <g transform="translate(520 100)">
+    <rect class="tile" width="140" height="112" rx="12"/>
+    <text class="num" x="12" y="22">04</text>
+    <g class="icon" transform="translate(38 24)">
+      <path d="M26 16L14 32L26 48"/>
+      <path d="M38 16L50 32L38 48"/>
+      <path d="M28 32H44"/>
+      <circle cx="20" cy="32" r="4"/>
+      <circle cx="44" cy="32" r="4"/>
+    </g>
+    <text class="label" x="70" y="98" text-anchor="middle">code route</text>
+  </g>
+
+  <g transform="translate(680 100)">
+    <rect class="tile" width="140" height="112" rx="12"/>
+    <text class="num" x="12" y="22">05</text>
+    <g class="icon" transform="translate(38 24)">
+      <circle cx="28" cy="28" r="15"/>
+      <path d="M40 40L52 52"/>
+      <path d="M20 28H36"/>
+      <circle cx="42" cy="18" r="4"/>
+    </g>
+    <text class="label" x="70" y="98" text-anchor="middle">search trace</text>
+  </g>
+
+  <g transform="translate(40 232)">
+    <rect class="tile" width="140" height="112" rx="12"/>
+    <text class="num" x="12" y="22">06</text>
+    <g class="icon" transform="translate(38 24)">
+      <path d="M16 16V48"/>
+      <path d="M16 32H48"/>
+      <circle cx="16" cy="16" r="5"/>
+      <circle cx="16" cy="32" r="5"/>
+      <circle cx="48" cy="32" r="5"/>
+      <circle cx="16" cy="48" r="5"/>
+    </g>
+    <text class="label" x="70" y="98" text-anchor="middle">breakpoint rail</text>
+  </g>
+
+  <g transform="translate(200 232)">
+    <rect class="tile" width="140" height="112" rx="12"/>
+    <text class="num" x="12" y="22">07</text>
+    <g class="icon" transform="translate(38 24)">
+      <path d="M16 50H48"/>
+      <path d="M22 42V20"/>
+      <path d="M32 42V12"/>
+      <path d="M42 42V28"/>
+      <circle cx="22" cy="20" r="4"/>
+      <circle cx="32" cy="12" r="4"/>
+      <circle cx="42" cy="28" r="4"/>
+    </g>
+    <text class="label" x="70" y="98" text-anchor="middle">timeline</text>
+  </g>
+
+  <g transform="translate(360 232)">
+    <rect class="tile" width="140" height="112" rx="12"/>
+    <text class="num" x="12" y="22">08</text>
+    <g class="icon" transform="translate(38 24)">
+      <rect x="14" y="12" width="36" height="12" rx="3"/>
+      <rect x="20" y="30" width="30" height="12" rx="3"/>
+      <rect x="26" y="48" width="24" height="8" rx="3"/>
+      <path d="M20 24V30"/>
+      <path d="M26 42V48"/>
+    </g>
+    <text class="label" x="70" y="98" text-anchor="middle">call stack</text>
+  </g>
+
+  <g transform="translate(520 232)">
+    <rect class="tile" width="140" height="112" rx="12"/>
+    <text class="num" x="12" y="22">09</text>
+    <g class="icon" transform="translate(38 24)">
+      <circle cx="32" cy="32" r="20"/>
+      <path d="M24 40L30 26L44 20L38 34L24 40Z"/>
+      <circle class="fill" cx="32" cy="32" r="2"/>
+    </g>
+    <text class="label" x="70" y="98" text-anchor="middle">navigator</text>
+  </g>
+
+  <g transform="translate(680 232)">
+    <rect class="tile" width="140" height="112" rx="12"/>
+    <text class="num" x="12" y="22">10</text>
+    <g class="icon" transform="translate(38 24)">
+      <path d="M16 18L30 32L16 46"/>
+      <path d="M34 46H50"/>
+      <circle cx="50" cy="46" r="4"/>
+    </g>
+    <text class="label" x="70" y="98" text-anchor="middle">terminal step</text>
+  </g>
+
+  <g transform="translate(40 364)">
+    <rect class="tile" width="140" height="112" rx="12"/>
+    <text class="num" x="12" y="22">11</text>
+    <g class="icon" transform="translate(38 24)">
+      <circle cx="16" cy="18" r="5"/>
+      <circle cx="48" cy="18" r="5"/>
+      <circle cx="32" cy="32" r="5"/>
+      <circle cx="16" cy="50" r="5"/>
+      <circle cx="48" cy="50" r="5"/>
+      <path d="M21 20L27 28"/>
+      <path d="M43 20L37 28"/>
+      <path d="M27 36L21 48"/>
+      <path d="M37 36L43 48"/>
+    </g>
+    <text class="label" x="70" y="98" text-anchor="middle">data flow</text>
+  </g>
+
+  <g transform="translate(200 364)">
+    <rect class="tile" width="140" height="112" rx="12"/>
+    <text class="num" x="12" y="22">12</text>
+    <g class="icon" transform="translate(38 24)">
+      <path d="M14 18H30L38 26H50"/>
+      <path d="M14 32H24L32 40H50"/>
+      <path d="M14 46H30"/>
+      <circle cx="14" cy="18" r="4"/>
+      <circle cx="14" cy="32" r="4"/>
+      <circle cx="14" cy="46" r="4"/>
+    </g>
+    <text class="label" x="70" y="98" text-anchor="middle">breadcrumbs</text>
+  </g>
+
+  <g transform="translate(360 364)">
+    <rect class="tile" width="140" height="112" rx="12"/>
+    <text class="num" x="12" y="22">13</text>
+    <g class="icon" transform="translate(38 24)">
+      <rect x="14" y="14" width="30" height="34" rx="6"/>
+      <path d="M24 22H52"/>
+      <path d="M24 32H46"/>
+      <path d="M24 42H40"/>
+    </g>
+    <text class="label" x="70" y="98" text-anchor="middle">trace card</text>
+  </g>
+
+  <g transform="translate(520 364)">
+    <rect class="tile" width="140" height="112" rx="12"/>
+    <text class="num" x="12" y="22">14</text>
+    <g class="icon" transform="translate(38 24)">
+      <path d="M32 54C32 54 48 38 48 24C48 15 41 10 32 10C23 10 16 15 16 24C16 38 32 54 32 54Z"/>
+      <circle cx="32" cy="24" r="6"/>
+      <path d="M22 54H42"/>
+    </g>
+    <text class="label" x="70" y="98" text-anchor="middle">source pin</text>
+  </g>
+
+  <g transform="translate(680 364)">
+    <rect class="tile" width="140" height="112" rx="12"/>
+    <text class="num" x="12" y="22">15</text>
+    <g class="icon" transform="translate(38 24)">
+      <path d="M16 50C44 50 20 14 48 14"/>
+      <circle cx="16" cy="50" r="5"/>
+      <circle cx="32" cy="32" r="5"/>
+      <circle cx="48" cy="14" r="5"/>
+    </g>
+    <text class="label" x="70" y="98" text-anchor="middle">flow curve</text>
+  </g>
+
+  <g transform="translate(40 496)">
+    <rect class="tile" width="140" height="112" rx="12"/>
+    <text class="num" x="12" y="22">16</text>
+    <g class="icon" transform="translate(38 24)">
+      <path d="M14 18H50"/>
+      <path d="M14 32H50"/>
+      <path d="M14 46H50"/>
+      <rect x="20" y="24" width="30" height="16" rx="4"/>
+    </g>
+    <text class="label" x="70" y="98" text-anchor="middle">active line</text>
+  </g>
+
+  <g transform="translate(200 496)">
+    <rect class="tile" width="140" height="112" rx="12"/>
+    <text class="num" x="12" y="22">17</text>
+    <g class="icon" transform="translate(38 24)">
+      <path d="M18 14L48 32L18 50V36L34 32L18 28V14Z"/>
+      <path d="M38 40L48 50"/>
+    </g>
+    <text class="label" x="70" y="98" text-anchor="middle">cursor path</text>
+  </g>
+
+  <g transform="translate(360 496)">
+    <rect class="tile" width="140" height="112" rx="12"/>
+    <text class="num" x="12" y="22">18</text>
+    <g class="icon" transform="translate(38 24)">
+      <path d="M26 22L20 16C16 12 10 12 6 16C2 20 2 26 6 30L14 38C18 42 24 42 28 38"/>
+      <path d="M38 42L44 48C48 52 54 52 58 48C62 44 62 38 58 34L50 26C46 22 40 22 36 26"/>
+      <path d="M24 40L40 24"/>
+    </g>
+    <text class="label" x="70" y="98" text-anchor="middle">link trace</text>
+  </g>
+
+  <g transform="translate(520 496)">
+    <rect class="tile" width="140" height="112" rx="12"/>
+    <text class="num" x="12" y="22">19</text>
+    <g class="icon" transform="translate(38 24)">
+      <path d="M12 34H20L24 22L32 46L40 18L44 34H52"/>
+      <circle cx="12" cy="34" r="4"/>
+      <circle cx="52" cy="34" r="4"/>
+    </g>
+    <text class="label" x="70" y="98" text-anchor="middle">signal trace</text>
+  </g>
+
+  <g transform="translate(680 496)">
+    <rect class="tile" width="140" height="112" rx="12"/>
+    <text class="num" x="12" y="22">20</text>
+    <g class="icon" transform="translate(38 24)">
+      <path d="M32 14C44 14 50 20 50 30C50 44 36 50 26 44C18 39 20 28 30 28H42"/>
+      <circle cx="32" cy="14" r="4"/>
+      <circle cx="26" cy="44" r="4"/>
+    </g>
+    <text class="label" x="70" y="98" text-anchor="middle">loop trace</text>
+  </g>
+
+  <g transform="translate(40 628)">
+    <rect class="tile" width="140" height="112" rx="12"/>
+    <text class="num" x="12" y="22">21</text>
+    <g class="icon" transform="translate(38 24)">
+      <path d="M16 18H48"/>
+      <path d="M16 32H48"/>
+      <path d="M16 46H48"/>
+      <circle cx="16" cy="32" r="8"/>
+    </g>
+    <text class="label" x="70" y="98" text-anchor="middle">line focus</text>
+  </g>
+
+  <g transform="translate(200 628)">
+    <rect class="tile" width="140" height="112" rx="12"/>
+    <text class="num" x="12" y="22">22</text>
+    <g class="icon" transform="translate(38 24)">
+      <path d="M24 14H16V50H24"/>
+      <path d="M40 14H48V50H40"/>
+      <circle cx="32" cy="32" r="7"/>
+    </g>
+    <text class="label" x="70" y="98" text-anchor="middle">bracket dot</text>
+  </g>
+
+  <g transform="translate(360 628)">
+    <rect class="tile" width="140" height="112" rx="12"/>
+    <text class="num" x="12" y="22">23</text>
+    <g class="icon" transform="translate(38 24)">
+      <circle cx="32" cy="14" r="5"/>
+      <circle cx="18" cy="36" r="5"/>
+      <circle cx="46" cy="36" r="5"/>
+      <circle cx="32" cy="54" r="5"/>
+      <path d="M30 19L20 31"/>
+      <path d="M34 19L44 31"/>
+      <path d="M22 39L30 51"/>
+      <path d="M42 39L34 51"/>
+    </g>
+    <text class="label" x="70" y="98" text-anchor="middle">node tree</text>
+  </g>
+
+  <g transform="translate(520 628)">
+    <rect class="tile" width="140" height="112" rx="12"/>
+    <text class="num" x="12" y="22">24</text>
+    <g class="icon" transform="translate(38 24)">
+      <path d="M18 18L30 32L18 46"/>
+      <path d="M36 18L48 32L36 46"/>
+      <path d="M14 32H48"/>
+      <circle cx="14" cy="32" r="4"/>
+    </g>
+    <text class="label" x="70" y="98" text-anchor="middle">step arrows</text>
+  </g>
+
+  <g transform="translate(680 628)">
+    <rect class="tile" width="140" height="112" rx="12"/>
+    <text class="num" x="12" y="22">25</text>
+    <g class="icon" transform="translate(38 24)">
+      <path d="M16 16H42L50 24V50H16V16Z"/>
+      <path d="M42 16V24H50"/>
+      <path d="M24 30H42"/>
+      <path d="M24 40H34"/>
+      <circle cx="18" cy="50" r="5"/>
+    </g>
+    <text class="label" x="70" y="98" text-anchor="middle">source map</text>
+  </g>
+
+  <g transform="translate(40 760)">
+    <rect class="tile" width="140" height="112" rx="12"/>
+    <text class="num" x="12" y="22">26</text>
+    <g class="icon" transform="translate(38 24)">
+      <path d="M32 12L48 20V34C48 44 40 52 32 56C24 52 16 44 16 34V20L32 12Z"/>
+      <path d="M24 34H40"/>
+      <circle cx="32" cy="34" r="5"/>
+    </g>
+    <text class="label" x="70" y="98" text-anchor="middle">guarded trace</text>
+  </g>
+
+  <g transform="translate(200 760)">
+    <rect class="tile" width="140" height="112" rx="12"/>
+    <text class="num" x="12" y="22">27</text>
+    <g class="icon" transform="translate(38 24)">
+      <path d="M16 16C32 16 32 32 48 32"/>
+      <path d="M16 48C32 48 32 32 48 32"/>
+      <circle cx="16" cy="16" r="5"/>
+      <circle cx="16" cy="48" r="5"/>
+      <circle cx="48" cy="32" r="5"/>
+    </g>
+    <text class="label" x="70" y="98" text-anchor="middle">merge path</text>
+  </g>
+
+  <g transform="translate(360 760)">
+    <rect class="tile" width="140" height="112" rx="12"/>
+    <text class="num" x="12" y="22">28</text>
+    <g class="icon" transform="translate(38 24)">
+      <rect x="14" y="14" width="36" height="36" rx="7"/>
+      <rect x="22" y="22" width="28" height="28" rx="6"/>
+      <rect x="30" y="30" width="20" height="20" rx="5"/>
+    </g>
+    <text class="label" x="70" y="98" text-anchor="middle">nested frames</text>
+  </g>
+
+  <g transform="translate(520 760)">
+    <rect class="tile" width="140" height="112" rx="12"/>
+    <text class="num" x="12" y="22">29</text>
+    <g class="icon" transform="translate(38 24)">
+      <path d="M16 16H32"/>
+      <path d="M24 16V50"/>
+      <path d="M36 16H44C50 16 54 20 54 26C54 32 50 36 44 36H36V16Z"/>
+      <path d="M36 36V50"/>
+      <circle cx="24" cy="50" r="4"/>
+    </g>
+    <text class="label" x="70" y="98" text-anchor="middle">DT mark</text>
+  </g>
+
+  <g transform="translate(680 760)">
+    <rect class="tile" width="140" height="112" rx="12"/>
+    <text class="num" x="12" y="22">30</text>
+    <g class="icon" transform="translate(38 24)">
+      <rect x="14" y="14" width="36" height="36" rx="10"/>
+      <path d="M24 26H40"/>
+      <path d="M24 38H34"/>
+      <circle cx="44" cy="44" r="6"/>
+    </g>
+    <text class="label" x="70" y="98" text-anchor="middle">soft square</text>
+  </g>
+</svg>

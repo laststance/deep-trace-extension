@@ -9,3 +9,4 @@
 - Step-by-step forward/backward navigation
 - Go to Definition from trace steps
 - Activity bar panel with tree view
+- Marketplace-ready package metadata, privacy notes, and publishing preflight script

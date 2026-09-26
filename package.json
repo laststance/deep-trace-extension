@@ -5,6 +5,7 @@
   "version": "0.0.1",
   "publisher": "laststance",
   "license": "MIT",
+  "pricing": "Free",
   "icon": "media/icon.png",
   "repository": {
     "type": "git",
@@ -35,6 +36,9 @@
     "theme": "dark"
   },
   "main": "./out/extension.js",
+  "extensionKind": [
+    "workspace"
+  ],
   "activationEvents": [
     "onView:deepTrace.traceView",
     "onCommand:deepTrace.loadFromClipboard",
@@ -46,12 +50,14 @@
     "onCommand:deepTrace.clearBreakpoints"
   ],
   "scripts": {
+    "vscode:prepublish": "pnpm build",
     "build": "tsc -p .",
     "watch": "tsc -w -p .",
     "typecheck": "tsc -p . --noEmit",
     "test": "vitest run",
-    "package": "pnpm build && pnpm exec vsce package --no-dependencies",
-    "vsce:publish": "pnpm build && pnpm exec vsce publish --no-dependencies"
+    "verify": "pnpm typecheck && pnpm test && pnpm audit --prod && pnpm package",
+    "package": "pnpm exec vsce package --no-dependencies",
+    "vsce:publish": "pnpm exec vsce publish --no-dependencies"
   },
   "contributes": {
     "viewsContainers": {
@@ -165,10 +171,11 @@
     ]
   },
   "devDependencies": {
-    "@types/node": "^25.4.0",
-    "@types/vscode": "^1.74.0",
-    "@vscode/vsce": "^3.7.1",
+    "@types/node": "22.19.18",
+    "@types/vscode": "1.74.0",
+    "@vscode/vsce": "^3.9.1",
     "typescript": "^5.9.3",
-    "vitest": "^4.0.18"
+    "vite": "^8.0.11",
+    "vitest": "^4.1.5"
   }
 }

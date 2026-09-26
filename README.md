@@ -1,6 +1,6 @@
 # Deep Trace Navigation
 
-Replay [deep-trace](https://github.com/laststance/deep-trace-extension) Markdown tables as native VS Code editor navigation steps.
+Replay deep-trace Markdown tables as native VS Code editor navigation steps.
 
 ## Features
 
@@ -17,6 +17,24 @@ Replay [deep-trace](https://github.com/laststance/deep-trace-extension) Markdown
 3. Click **Load Trace from Clipboard** (or run the command from the palette).
 4. Use **Next Step** / **Previous Step** to walk through the execution path.
 
+## Supported trace format
+
+Deep Trace Navigation reads Markdown tables from your clipboard. At minimum, the table needs a file/path column and a line column.
+
+```markdown
+| file | line | column | reason |
+|------|------|--------|--------|
+| src/extension.ts | 322 | 1 | VS Code activates the extension |
+| src/parser/traceParser.ts | 23 | 1 | The clipboard table is parsed |
+```
+
+Accepted header aliases include:
+
+- `file` or `path`
+- `line`
+- `column`, `col`, or `character`
+- `reason`, `why`, `summary`, or `title`
+
 ## Commands
 
 | Command | Description |
@@ -32,6 +50,10 @@ Replay [deep-trace](https://github.com/laststance/deep-trace-extension) Markdown
 ## Requirements
 
 - VS Code 1.74.0 or later
+
+## Privacy
+
+Deep Trace Navigation does not send trace data anywhere. Clipboard contents are parsed locally inside VS Code, and the active trace session is stored only in VS Code workspace state so it can be restored in the same workspace.
 
 ## License
 
