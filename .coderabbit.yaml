@@ -1,0 +1,91 @@
+# yaml-language-server: $schema=https://coderabbit.ai/integrations/schema.v2.json
+
+language: en-US
+early_access: false
+tone_instructions: >-
+  Be concise and specific. Explain the observable failure and the affected VS Code users.
+  Prioritize correctness, editor-state consistency, and resource cleanup over stylistic preferences.
+
+reviews:
+  profile: assertive
+  request_changes_workflow: true
+  high_level_summary: true
+  high_level_summary_in_walkthrough: true
+  review_status: true
+  review_details: true
+  collapse_walkthrough: true
+  sequence_diagrams: false
+  in_progress_fortune: false
+  poem: false
+  enable_prompt_for_ai_agents: true
+
+  auto_review:
+    enabled: true
+    auto_incremental_review: true
+    auto_pause_after_reviewed_commits: 0
+    drafts: false
+
+  path_filters:
+    - '**/*'
+    - '!**/node_modules/**'
+    - '!**/out/**'
+    - '!**/coverage/**'
+    - '!**/.fallow/**'
+    - '!**/*.vsix'
+    # Keep dependency changes in review scope.
+    - '**/pnpm-lock.yaml'
+
+  path_instructions:
+    - path: '**/*'
+      instructions: |
+        This VS Code extension replays deep-trace Markdown tables as editor navigation steps.
+        Use README.md and ARCHITECTURE.md for the supported behavior. Prioritize regressions
+        with a concrete editor scenario; distinguish documented limitations from defects.
+        Avoid duplicating formatting and naming feedback already enforced by Prettier and
+        eslint-config-ts-prefixer.
+
+    - path: 'src/**'
+      instructions: |
+        Keep parsing and lens/label building free of the vscode module so they stay unit-testable.
+        Every event subscription, provider registration, and emitter must be disposed.
+        Tab/Shift+Tab must only navigate while the cursor sits on the current step line;
+        elsewhere Tab must keep indenting. Relative trace paths resolve against the workspace
+        folder and must fail gracefully without one. Only remove breakpoints this extension added.
+        Trace data must never leave the machine.
+
+    - path: 'src/test/**'
+      instructions: |
+        Use test rather than it, observable behavior names, hard-coded expected values, and
+        Arrange/Act/Assert sections. Prefer DAMP over sharing assertion logic between tests.
+        Verify observable editor effects (messages, breakpoints, reveals, context keys)
+        instead of implementation details.
+
+    - path: 'package.json'
+      instructions: |
+        Check contributes (commands, keybindings when-clauses, configuration, chatSkills)
+        against the implementation. engines.vscode must not be lower than @types/vscode.
+        The extension ships no runtime dependencies; vsce packs with --no-dependencies.
+
+    - path: 'skills/**'
+      instructions: |
+        The bundled deep-trace skill is copied from laststance/skills. Script paths must
+        resolve relative to the bundled SKILL.md inside the installed extension.
+
+    - path: '.github/**'
+      instructions: |
+        Keep remote actions pinned to full commit SHAs, permissions scoped to each job's needs,
+        persist-credentials disabled, frozen-lockfile installs, and pnpm-store-only caches.
+
+    - path: '**/*.md'
+      instructions: |
+        Keep documented commands, settings, and requirements in sync with package.json.
+
+chat:
+  auto_reply: true
+
+knowledge_base:
+  code_guidelines:
+    enabled: true
+    filePatterns:
+      - README.md
+      - CONTRIBUTING.md
