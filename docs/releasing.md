@@ -1,4 +1,4 @@
-# Publishing
+# Releasing
 
 This extension is prepared for the Visual Studio Marketplace. The package is built with `@vscode/vsce` and contains only the compiled extension entry points, Marketplace metadata, README, CHANGELOG, LICENSE, and extension media assets.
 
@@ -10,12 +10,7 @@ Run this before creating or uploading a VSIX:
 pnpm verify
 ```
 
-The verification script runs:
-
-- `pnpm typecheck`
-- `pnpm test`
-- `pnpm audit --prod`
-- `pnpm package`
+`pnpm verify` runs `pnpm check` (format, documentation links, lint, types, tests with coverage, Fallow and VSIX packaging) followed by `pnpm audit --prod`. Update `version` in `package.json` and add a CHANGELOG.md entry first.
 
 ## Package locally
 
@@ -48,6 +43,14 @@ pnpm publish:stores
 
 `scripts/publish-stores.mjs` stops at the first failed upload, so a release never ends up on only one store without an error.
 
+After publishing, push the release commit, tag it `v<version>`, and create a GitHub Release with the VSIX attached:
+
+```bash
+gh release create v<version> deep-trace-navigation-<version>.vsix --title v<version> --notes-file <notes>
+```
+
+Automating this in CI is tracked in [TODOS.md](../TODOS.md).
+
 ## Marketplace notes
 
 - Publisher: `laststance`
@@ -55,4 +58,4 @@ pnpm publish:stores
 - VS Code compatibility: `^1.138.0`
 - Runtime dependencies: none
 - Package icon: `media/icon.png` (PNG, not SVG)
-- Excluded by `.vscodeignore`: source files, tests, docs, logs, local VS Code settings, source maps, existing VSIX files, and local Codex/Claude files
+- Excluded by `.vscodeignore`: source files, tests, docs, contributor guides, CI and tool configuration, coverage, logs, local editor settings, source maps, existing VSIX files, and local agent files

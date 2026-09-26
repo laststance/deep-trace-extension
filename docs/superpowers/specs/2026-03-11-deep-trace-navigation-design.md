@@ -57,15 +57,15 @@ The extension contributes a dedicated activity bar container with a single `Tree
 
 ```ts
 type TraceStep = {
-  id: string;
-  index: number;
-  title: string;
-  file: string;
-  line: number;
-  column: number;
-  reason: string;
-  raw: Record<string, string>;
-};
+  id: string
+  index: number
+  title: string
+  file: string
+  line: number
+  column: number
+  reason: string
+  raw: Record<string, string>
+}
 ```
 
 ### Parsing Strategy

@@ -18,6 +18,7 @@
 ### Task 1: Bootstrap the Extension Workspace
 
 **Files:**
+
 - Create: `package.json`
 - Create: `tsconfig.json`
 - Create: `.gitignore`
@@ -28,6 +29,7 @@
 **Step 1: Define the extension package metadata**
 
 Write a `package.json` that contributes:
+
 - one activity bar container
 - one tree view
 - commands for load, next, previous, reveal, and definition
@@ -53,6 +55,7 @@ Expected: TypeScript compiles or fails only because later modules are still miss
 ### Task 2: Implement and Test the Markdown Trace Parser
 
 **Files:**
+
 - Create: `src/models/traceStep.ts`
 - Create: `src/parser/traceParser.ts`
 - Create: `src/test/traceParser.test.ts`
@@ -61,6 +64,7 @@ Expected: TypeScript compiles or fails only because later modules are still miss
 **Step 1: Write the parser tests first**
 
 Cover:
+
 - a normal Markdown table
 - a table without a `column` field
 - fenced Markdown input
@@ -83,6 +87,7 @@ Expected: parser tests pass.
 ### Task 3: Add Session State and Editor Navigation
 
 **Files:**
+
 - Create: `src/state/traceSessionStore.ts`
 - Create: `src/services/navigationService.ts`
 - Create: `src/services/definitionService.ts`
@@ -103,6 +108,7 @@ Use `vscode.executeDefinitionProvider` at the current trace position and resolve
 **Step 4: Wire commands into activation**
 
 Register:
+
 - `deepTrace.loadFromClipboard`
 - `deepTrace.nextStep`
 - `deepTrace.previousStep`
@@ -117,6 +123,7 @@ Expected: extension compiles with the new services.
 ### Task 4: Add the Tree View and Native Navigation UI
 
 **Files:**
+
 - Create: `src/views/traceTreeProvider.ts`
 - Modify: `package.json`
 - Modify: `src/extension.ts`
@@ -136,6 +143,7 @@ Ensure clicking a tree item reveals the step, and `next` or `previous` updates t
 **Step 4: Run manual smoke verification**
 
 Launch the extension host, load a sample Markdown trace, and confirm:
+
 - the tree populates
 - next and previous move the editor
 - the current step stays visible in the view
@@ -144,6 +152,7 @@ Launch the extension host, load a sample Markdown trace, and confirm:
 ### Task 5: Final Verification and Cleanup
 
 **Files:**
+
 - Modify: any touched file as needed
 - Check: `docs/superpowers/specs/2026-03-11-deep-trace-navigation-design.md`
 - Check: `docs/plans/2026-03-11-deep-trace-navigation.md`
@@ -151,6 +160,7 @@ Launch the extension host, load a sample Markdown trace, and confirm:
 **Step 1: Run verification commands**
 
 Run:
+
 - `pnpm build`
 - `pnpm test`
 
