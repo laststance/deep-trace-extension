@@ -5,7 +5,12 @@
 ### Added
 
 - Inline step annotation: the current step's description is shown right above its line, with prev/next actions
+- Bundle the `deep-trace` agent skill via the `chatSkills` contribution point
 - Tab / Shift+Tab moves between steps while the cursor is on the current step line (`deepTrace.tabNavigation`)
+
+### Changed
+
+- Require VS Code 1.138.0 or later (`engines.vscode` now matches `@types/vscode`)
 
 ## [0.0.1] - 2026-03-12
 

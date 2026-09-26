@@ -10,6 +10,7 @@ Replay deep-trace Markdown tables as native VS Code editor navigation steps.
 - **Tab navigation** — While the cursor is on the current step line, `Tab` / `Shift+Tab` moves to the next / previous step.
 - **Go to Definition** — Jump directly to the source location of the current trace step.
 - **Trace Breakpoints** — Set or clear debugger breakpoints for every trace target line.
+- **Bundled `deep-trace` agent skill** — Ask the chat agent to `/deep-trace` a PR or file and it produces a trace table you can load straight into this extension.
 - **Activity bar panel** — Dedicated sidebar view showing the full trace as a tree.
 
 ## Usage
@@ -18,6 +19,16 @@ Replay deep-trace Markdown tables as native VS Code editor navigation steps.
 2. Open the **Deep Trace** panel in the activity bar.
 3. Click **Load Trace from Clipboard** (or run the command from the palette).
 4. Use **Next Step** / **Previous Step** to walk through the execution path.
+
+## Bundled agent skill
+
+This extension contributes the [`deep-trace`](https://github.com/laststance/skills/tree/main/skills/deep-trace) skill through the `chatSkills` contribution point, so it is available in VS Code chat (agent mode) without a separate install.
+
+1. In chat, run `/deep-trace <pr-number-or-file-path>`.
+2. The skill outputs a trace plus an extension-ready table and, when possible, copies that table to the clipboard.
+3. Run **Deep Trace: Load Trace from Clipboard** to step through it.
+
+The skill files live in `skills/deep-trace/` and are copied from [laststance/skills](https://github.com/laststance/skills) (commit `9c14dc1`), with the helper script path in Step 6.5 adjusted to resolve relative to the bundled `SKILL.md`.
 
 ## Supported trace format
 
@@ -68,7 +79,7 @@ Its color and size follow your color theme's CodeLens style. If the annotation i
 
 ## Requirements
 
-- VS Code 1.74.0 or later
+- VS Code 1.138.0 or later
 
 ## Privacy
 

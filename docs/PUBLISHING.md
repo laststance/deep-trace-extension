@@ -48,7 +48,7 @@ pnpm vsce:publish
 
 - Publisher: `laststance`
 - Extension ID: `laststance.deep-trace-navigation`
-- VS Code compatibility: `^1.74.0`
+- VS Code compatibility: `^1.138.0`
 - Runtime dependencies: none
 - Package icon: `media/icon.png` (PNG, not SVG)
 - Excluded by `.vscodeignore`: source files, tests, docs, logs, local VS Code settings, source maps, existing VSIX files, and local Codex/Claude files
