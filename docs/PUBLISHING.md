@@ -26,23 +26,27 @@ pnpm package
 The generated file is:
 
 ```text
-deep-trace-navigation-0.0.1.vsix
+deep-trace-navigation-<version>.vsix
 ```
 
 ## Publish
 
-First authenticate the Marketplace publisher account:
+Publishing uploads the same VSIX to both the VS Code Marketplace and Open VSX. Tokens are never stored in the repo: `.env.1password` only holds `op://` references, and the [1Password CLI](https://developer.1password.com/docs/cli/) injects `VSCE_PAT` and `OVSX_PAT` for the duration of the command.
+
+Check what would run without publishing:
 
 ```bash
-pnpm exec vsce login laststance
-pnpm exec vsce verify-pat laststance
+pnpm package
+pnpm publish:stores:dry-run
 ```
 
 Then publish:
 
 ```bash
-pnpm vsce:publish
+pnpm publish:stores
 ```
+
+`scripts/publish-stores.mjs` stops at the first failed upload, so a release never ends up on only one store without an error.
 
 ## Marketplace notes
 

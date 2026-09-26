@@ -15,3 +15,5 @@ pnpm-lock.yaml
 pnpm-workspace.yaml
 *.vsix
 **/*.map
+.env.1password
+scripts/**

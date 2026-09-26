@@ -2,7 +2,7 @@
   "name": "deep-trace-navigation",
   "displayName": "Deep Trace Navigation",
   "description": "Replay deep-trace Markdown tables as native VS Code editor navigation steps.",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "publisher": "laststance",
   "license": "MIT",
   "pricing": "Free",
@@ -57,7 +57,8 @@
     "test": "vitest run",
     "verify": "pnpm typecheck && pnpm test && pnpm audit --prod && pnpm package",
     "package": "pnpm exec vsce package --no-dependencies",
-    "vsce:publish": "pnpm exec vsce publish --no-dependencies"
+    "publish:stores": "pnpm package && op run --env-file=.env.1password -- node scripts/publish-stores.mjs",
+    "publish:stores:dry-run": "node scripts/publish-stores.mjs --dry-run"
   },
   "contributes": {
     "viewsContainers": {
